@@ -1,0 +1,21 @@
+version: '2'
+services:
+    nginx:
+        image: jhyeon1010/nginx
+        volumes_from:
+            - php
+        volumes:
+            - ./sites-available/mysite:/etc/nginx/sites-available/default
+        ports:
+            - "80:80"
+            - "443:443"
+
+    php:
+        image: jhyeon1010/php-fpm
+        volumes_from:
+            - app
+
+    app:
+        image: tianon/true
+        volumes:
+            - ./www:/var/www/html

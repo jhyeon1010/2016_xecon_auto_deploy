@@ -1,0 +1,14 @@
+version: '2'
+services:
+    nginx:
+        image: jhyeon1010/nginx
+        volumes_from:
+            - app
+        volumes:
+            - ./sites-available/mysite:/etc/nginx/sites-available/default
+        ports:
+            - "8001:80"
+            - "4001:443"
+
+    app:
+        image: 10.0.0.0:5000/mysite_app

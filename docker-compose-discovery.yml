@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+    app_blue:
+        image: jhyeon1010/php-fpm
+        depends_on:
+            - nginx
+        environment:
+            - "VIRTUAL_HOST=localhost.app"
+        volumes_from:
+            - volume_source
+            - volume_php_set
+
+    app_green:
+        image: jhyeon1010/php-fpm
+        depends_on:
+            - nginx
+        environment:
+            - "VIRTUAL_HOST=localhost.app"
+        volumes_from:
+            - volume_source
+            - volume_php_set
+
+    nginx:
+        image: jwilder/nginx-proxy
+        volumes_from:
+            - volume_source
+        volumes:
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+            - ./nginxproxy/nginx.tmpl:/app/nginx.tmpl
+        ports:
+            - 80:80
+
+    volume_source:
+        image: tianon/true
+        volumes:
+            - ./www:/var/www/html
+
+    volume_php_set:
+        image: tianon/true
+        volumes:
+            - ./php-fpm.pool.conf:/etc/php/7.0/fpm/pool.d/www.conf
+            - ./opcache.ini:/etc/php/7.0/mods-available/opcache.ini

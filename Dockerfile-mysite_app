@@ -1,0 +1,3 @@
+FROM jhyeon1010/php-fpm
+
+COPY www /var/www/html
